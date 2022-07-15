@@ -1,0 +1,36 @@
+#
+# This here script will take a directory full of directories of
+# artist names organizaed like
+#
+# /artist1
+#	album1
+#	album2
+# /artist2
+#	album1...
+#
+# and create a playlist file in each album directory.
+#
+# Written by C L Duston (July 2022), christopher.duston@protonmail.com
+#
+# Run with bash CreatePlayList, after chmod crap.
+# Make sure there are no other directories in this one
+# except directories of artists!
+# Like, watch out for that 'system volume information' nonesense!
+array=(*/)
+for dir in "${array[@]}"; do
+    cd "$dir"
+    echo "$dir List:"
+    ls -a -I "." -I ".."
+    albumarray=(*/)
+    for alb in "${albumarray[@]}"; do
+    	cd "$alb"
+    	echo "$alb..."
+	#Strip off / for filename....
+	filename="${dir::-1} - ${alb::-1}.m3u"
+ 	ls -a -I '.' -I '..' -I '*.jpg' -I '*.m3u' > "$filename"
+	echo "created filename $filename"
+	cd ..
+    done
+    cd ..
+done
+
